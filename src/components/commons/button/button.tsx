@@ -2,32 +2,44 @@
 import clsx from 'clsx';
 import { css } from '@emotion/react';
 
-export default function Button({ children, variant = 'primary', className, onClick, iconLeft, iconRight }: Props) {
-    const buttonStyles = {
+export default function Button({ className, classNameLabel, label, variant = 'primary', rounded = false, iconLeft, iconRight, children, onClick }: Props) {
+
+    const buttonStyles = css`p-4 ${rounded && 'rounded-full'}`;
+
+    const buttonVariant = {
         primary: css`
-          bg-primary hover:bg-blue-600 text-red-200
+          bg-primary hover:bg-blue-600 text-white
         `,
         secondary: css`
           bg-gray-300 hover:bg-gray-400 text-black
         `,
     }[variant];
 
-    return (
-        <button className={clsx('p-4', buttonStyles.styles, className)} onClick={onClick}>
-            {iconLeft && <span className='mr-2'>{iconLeft}</span>}
+    const labelStyles = css`text-base text-black ${iconLeft && 'pl-2'} ${iconRight && 'pr-2'}`;
+
+    return children ? (
+        <button className={clsx(buttonStyles.styles, buttonVariant.styles, className)} onClick={onClick}>
             {children}
-            {iconRight && <span className='ml-2'>{iconRight}</span>}
+        </button>
+    ) : (
+        <button className={clsx(buttonStyles.styles, buttonVariant.styles, className)} onClick={onClick}>
+            {iconLeft && iconLeft}
+            {label && <span className={clsx(labelStyles.styles, classNameLabel)}>{label}</span>}
+            {iconRight && iconRight}
         </button>
     );
 }
 
 interface Props {
     className?: string;
-    children: React.ReactNode;
+    classNameLabel?: string;
+    label?: string;
     variant?: ButtonVariant;
-    onClick?: () => void;
+    rounded?: boolean;
     iconLeft?: React.ReactNode;
     iconRight?: React.ReactNode;
+    children?: React.ReactNode;
+    onClick?: () => void;
 }
 
 type ButtonVariant = 'primary' | 'secondary';

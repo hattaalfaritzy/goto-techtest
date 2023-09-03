@@ -1,0 +1,6 @@
+.required-form {
+    &:after {
+        content: '*';
+        @apply text-error;
+    }
+}

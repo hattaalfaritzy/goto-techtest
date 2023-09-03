@@ -1,0 +1,12 @@
+#layout-default {
+    @apply flex flex-col w-full h-auto min-h-screen bg-[#F9FAFF];
+
+    main.main {
+        @apply flex h-full min-h-screen w-full max-w-screen-xl mx-auto pt-[108px] pb-10;
+    }
+
+    footer.footer {
+        grid-area: footer;
+        @apply fixed bottom-0 flex w-full shadow-lg;
+    }
+}
