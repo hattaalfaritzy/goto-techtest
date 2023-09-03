@@ -1,0 +1,49 @@
+// :root {
+//     --foreground-rgb: 0, 0, 0;
+//     --background-start-rgb: 214, 219, 220;
+//     --background-end-rgb: 255, 255, 255;
+//     --body-bg: #f5f5f5;
+//     --color-primary: #b91c1c;
+//     --color-secodanry: #fee2e2;
+// }
+
+// @media (prefers-color-scheme: dark) {
+//     :root {
+//         --foreground-rgb: 255, 255, 255;
+//         --background-start-rgb: 0, 0, 0;
+//         --background-end-rgb: 0, 0, 0;
+//     }
+// }
+
+// body {
+//     background-color: var(--body-bg);
+//     min-height: 100vh;
+// }
+
+// SCROLLBAR
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f3f4f6;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
+}
+// SCROLLBAR
+
+.hide-mobile {
+    @apply hidden md:flex;
+}
+
+.hide-website {
+    @apply flex md:hidden;
+}
