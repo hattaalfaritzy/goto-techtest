@@ -1,10 +1,14 @@
 import clsx from 'clsx';
 import Favorite from './icons/favorite';
 import Trash from './icons/trash';
+import ChevronLeft from './icons/chevron-left';
+import ChevronRight from './icons/chevron-right';
 
 export const icons: any = {
   favorite: Favorite,
   trash: Trash,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
 };
 
 export default function Icon({ className, name, ...props }: Props) {

@@ -4,6 +4,7 @@ import HeadingLink from './heading-link/heading-link';
 import Icon from './icon';
 import ImageWithFallback from './image-with-fallback/image-with-fallback';
 import ListForm from './list-form/list-form';
+import Pagination from './pagination/pagination';
 import Table from './table/table';
 
 export {
@@ -13,5 +14,6 @@ export {
     Icon,
     ImageWithFallback,
     ListForm,
+    Pagination,
     Table
 }

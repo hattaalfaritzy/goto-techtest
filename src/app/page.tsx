@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { InputText } from '@/components/forms';
-import { Button, Card, HeadingLink, Icon, ListForm, Table } from '@/components/commons';
+import { Button, Card, HeadingLink, Icon, ListForm, Pagination, Table } from '@/components/commons';
 import { GET_CONTACTS } from '@/graphql/queries/contact';
 import { useQuery } from '@apollo/client';
 import useStorage from '@/hooks/use-storage';
@@ -10,18 +10,16 @@ export default function Home() {
     const { setLocalStorageItem, getLocalStorageItem } = useStorage();
     const [contactsData, setContactsData] = useState<ContactInterface.Contact[]>([]);
     const [favoriteContacts, setFavoriteContacts] = useState<ContactInterface.Contact[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const limitPage = 10;
 
     const [graphqlVariables, setGraphqlVariables] = useState({
-        limit: 10,
-        offset: 0,
         where: {},
     });
 
     const { data: contacts, loading } = useQuery<ContactInterface.ApiResponse>(GET_CONTACTS, {
         variables: graphqlVariables,
     });
-
-    console.log(contacts, 'contacts search');
 
     useEffect(() => {
         const storedContacts = getLocalStorageItem('contact');
@@ -44,58 +42,60 @@ export default function Home() {
 
     const addToFavorites = (contact: ContactInterface.Contact) => {
         setFavoriteContacts([...favoriteContacts, contact]);
-        setContactsData(contactsData.filter((item) => item.id !== contact.id));
+        const updatedContacts = contactsData.filter((item) => item.id !== contact.id);
+        setContactsData(updatedContacts);
         setLocalStorageItem('favorites', [...favoriteContacts, contact]);
-        setLocalStorageItem(
-            'contact',
-            contactsData.filter((item) => item.id !== contact.id)
-        );
+        setLocalStorageItem('contact', updatedContacts);
     };
 
     const removeFromFavorites = (contact: ContactInterface.Contact) => {
         setFavoriteContacts(favoriteContacts.filter((item) => item.id !== contact.id));
-        setContactsData([...contactsData, contact]);
-        setLocalStorageItem('contact', [...contactsData, contact]);
-        setLocalStorageItem(
-            'favorites',
-            favoriteContacts.filter((item) => item.id !== contact.id)
-        );
+        const updatedContacts = [...contactsData, contact];
+        setContactsData(updatedContacts);
+        setLocalStorageItem('contact', updatedContacts);
+        setLocalStorageItem('favorites', favoriteContacts.filter((item) => item.id !== contact.id));
     };
 
     const handleSearchChange = (search: string) => {
+        setCurrentPage(1); // reset to first page during a new search
         if (search.trim() === '') {
-            setGraphqlVariables({
-                limit: 10,
-                offset: 0,
-                where: {},
-            });
+            setGraphqlVariables({ where: {} });
         } else {
-            setGraphqlVariables((prev) => ({
-                ...prev,
+            setGraphqlVariables({
                 where: {
-                    _or: [{ first_name: { _ilike: `%${search}%` } }, { last_name: { _ilike: `%${search}%` } }],
-                },
-            }));
+                    _or: [
+                        { first_name: { _ilike: `%${search}%` } },
+                        { last_name: { _ilike: `%${search}%` } }
+                    ]
+                }
+            });
         }
     };
 
+    const startIndex = (currentPage - 1) * limitPage;
+    const endIndex = startIndex + limitPage;    
+    const contactsToDisplay = contactsData?.slice(startIndex, endIndex);
     const columns: string[] = ['No.', 'First Name', 'Last Name', 'Phone', 'Action'];
-
+    
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+    
     return (
         <main className='flex flex-col items-center w-full py--default space-y-8'>
             <div className='flex flex-col w-full'>
                 <HeadingLink title='List Favorite Contacts' />
                 <div className='grid grid-cols-1 gap-4 w-full'>
-                    {favoriteContacts && favoriteContacts.length > 0 ? (
+                    {favoriteContacts.length > 0 ? (
                         favoriteContacts.map((item, index) => (
-                            <Card className='flex flex-row justify-between items-start space-y-1' withShadow key={index}>
+                            <Card key={index} className='flex flex-row justify-between items-start space-y-1' withShadow>
                                 <div className='flex flex-col w-full justify-start items-start'>
                                     <ListForm title='Name' loading={loading} value={`${item?.first_name} ${item?.last_name}`} />
                                     <ListForm
                                         title='Phone'
                                         loading={loading}
                                         renderValue={item?.phones.map((phone, idx) => (
-                                            <span className='text-black text-xs capitalize' key={idx}>
+                                            <span key={idx} className='text-black text-xs capitalize'>
                                                 {phone.number}
                                             </span>
                                         ))}
@@ -114,7 +114,7 @@ export default function Home() {
                             </Card>
                         ))
                     ) : (
-                        <div className='flex justify-center items-center w-full'>Favorite Contact not found</div>
+                        <div className='flex justify-center items-center w-full'>Favorite Contact Empty</div>
                     )}
                 </div>
             </div>
@@ -134,8 +134,8 @@ export default function Home() {
                         <Button label='Add Contact' className='py-2 px-4' />
                     </div>
                     <Table columns={columns} loading={loading}>
-                        {contactsData && contactsData.length > 0 ? (
-                            contactsData.map((value, index) => (
+                        {contactsToDisplay.length > 0 ? (
+                            contactsToDisplay.map((value, index) => (
                                 <tr key={index} className='cursor-pointer'>
                                     <td>{index + 1}</td>
                                     <td>{value?.first_name ?? '-'}</td>
@@ -166,6 +166,12 @@ export default function Home() {
                             </tr>
                         )}
                     </Table>
+                    <Pagination
+                        total={contacts?.contact.length}
+                        itemsPerPage={limitPage}
+                        currentPage={currentPage}
+                        onClickPage={handlePageChange}
+                    />
                 </div>
             </div>
         </main>
