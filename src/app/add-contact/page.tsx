@@ -1,10 +1,13 @@
 'use client';
 import { Button, HeadingLink } from '@/components/commons';
 import { InputText } from '@/components/forms';
+import { ADD_CONTACT } from '@/graphql/mutations/contact-mutations';
 import { formAddContact } from '@/utils/form-validation';
+import { useMutation } from '@apollo/client';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 export default function AddContact() {
+    const [addContactMutation, { data, loading, error }] = useMutation(ADD_CONTACT);
     const {
         register,
         handleSubmit,
@@ -16,11 +19,20 @@ export default function AddContact() {
         name: 'phones',
     });
 
-    const onSubmit = async (value: any) => {
-        console.log(value, 'value login');
+    const onSubmit = async (formData: any) => {
+        try {
+            await addContactMutation({
+                variables: {
+                    first_name: formData.first_name,
+                    last_name: formData.last_name,
+                    phones: formData.phones,
+                },
+            });
+            console.log('Contact added successfully.');
+        } catch (e) {
+            console.error('Error adding contact:', e);
+        }
     };
-
-    console.log(fields, 'fields');
 
     return (
         <div className='flex flex-col items-center w-full py--default space-y-8'>
