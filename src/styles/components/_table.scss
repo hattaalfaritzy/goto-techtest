@@ -2,11 +2,11 @@
     @apply table-fixed min-w-full;
 
     th {
-        @apply p-3 text-left;
+        @apply p-3 text-center;
     }
 
     td {
-        @apply text-sm text-[#3C434E] font-normal p-3 border-b;
+        @apply text-sm text-center text-[#3C434E] font-normal p-3 border-b;
     }
 
     thead > tr {

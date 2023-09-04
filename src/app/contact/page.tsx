@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { InputText } from '@/components/forms';
 import { Button, Card, HeadingLink, Icon, ListForm, Pagination, Table } from '@/components/commons';
 import { GET_CONTACTS } from '@/graphql/queries/contact';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import useStorage from '@/hooks/use-storage';
 import { useRouter } from 'next/navigation';
+import { DELETE_CONTACT } from '@/graphql/mutations/contact-mutations';
 
 export default function Home() {
     const router = useRouter();
@@ -27,6 +28,21 @@ export default function Home() {
     } = useQuery<ContactInterface.ApiResponse>(GET_CONTACTS, {
         variables: graphqlVariables,
     });
+
+    const [deleteContactMutation] = useMutation(DELETE_CONTACT);
+
+    const onDelete = async (id: number) => {
+        try {
+            await deleteContactMutation({
+                variables: {
+                    id: id,
+                },
+            });
+            refetch();
+        } catch (e) {
+            console.error('Error delete contact:', e);
+        }
+    };
 
     useEffect(() => {
         const storedContacts = getLocalStorageItem('contact');
@@ -160,13 +176,7 @@ export default function Home() {
                     <Table columns={columns} loading={loading}>
                         {contactsToDisplay.length > 0 ? (
                             contactsToDisplay.map((value, index) => (
-                                <tr
-                                    key={index}
-                                    className='cursor-pointer'
-                                    onClick={() => {
-                                        router.push(`/contact/${value.id}`);
-                                    }}
-                                >
+                                <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{value?.first_name ?? '-'}</td>
                                     <td>{value?.last_name ?? '-'}</td>
@@ -176,14 +186,32 @@ export default function Home() {
                                             <span className='text-black text-xs capitalize mx-1'>({value.phones.length - 1} more)</span>
                                         )}
                                     </td>
-                                    <td>
+                                    <td className='flex flex-row space-x-1 justify-center items-center'>
+                                        <Button
+                                            variant='transparent'
+                                            className='group p-1.5 border border-warning hover:border-warning hover:bg-warning'
+                                            rounded
+                                            onClick={() => addToFavorites(value)}
+                                        >
+                                            <Icon name='favorite' width={14} className='fill-warning group-hover:fill-white' />
+                                        </Button>
+                                        <Button
+                                            variant='transparent'
+                                            className='group p-1.5 border border-primary-700 hover:border-primary-700 hover:bg-primary-700'
+                                            rounded
+                                            onClick={() => {
+                                                router.push(`/contact/${value.id}`);
+                                            }}
+                                        >
+                                            <Icon name='menu' width={16} className='fill-primary-700 group-hover:fill-white' />
+                                        </Button>
                                         <Button
                                             variant='transparent'
                                             className='group p-1.5 border border-error hover:border-error hover:bg-error'
                                             rounded
-                                            onClick={() => addToFavorites(value)}
+                                            onClick={() => onDelete(value?.id)}
                                         >
-                                            <Icon name='favorite' width={14} className='fill-error group-hover:fill-white' />
+                                            <Icon name='trash' width={16} className='fill-error group-hover:fill-white' />
                                         </Button>
                                     </td>
                                 </tr>

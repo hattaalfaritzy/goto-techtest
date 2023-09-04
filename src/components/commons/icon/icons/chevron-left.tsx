@@ -6,6 +6,6 @@ export default function ChevronLeft({ width = 20, ...props }: Props) {
     );
 }
 
-type Props = JSX.IntrinsicElements['svg'] & {
+type Props = {
     width?: any;
-};
+} & React.ComponentPropsWithoutRef<'svg'>;
