@@ -4,6 +4,7 @@ import Trash from './icons/trash';
 import ChevronLeft from './icons/chevron-left';
 import ChevronRight from './icons/chevron-right';
 import Menu from './icons/menu';
+import Clip from './icons/clip';
 
 export const icons: any = {
   favorite: Favorite,
@@ -11,6 +12,7 @@ export const icons: any = {
   'chevron-left': ChevronLeft,
   'chevron-right': ChevronRight,
   menu: Menu,
+  clip: Clip
 };
 
 export default function Icon({ className, name, ...props }: Props) {

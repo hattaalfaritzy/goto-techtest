@@ -1,7 +1,7 @@
 declare namespace ContactInterface {
 
     export interface Phone {
-        number: number;
+        number: number | string;
     }
 
     export interface Contact {

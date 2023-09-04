@@ -207,6 +207,16 @@ export default function Home() {
                                         </Button>
                                         <Button
                                             variant='transparent'
+                                            className='group p-1.5 border border-primary-700 hover:border-primary-700 hover:bg-primary-700'
+                                            rounded
+                                            onClick={() => {
+                                                router.push(`/contact/edit-contact/${value.id}`);
+                                            }}
+                                        >
+                                            <Icon name='clip' width={16} className='fill-primary-700 group-hover:fill-white' />
+                                        </Button>
+                                        <Button
+                                            variant='transparent'
                                             className='group p-1.5 border border-error hover:border-error hover:bg-error'
                                             rounded
                                             onClick={() => onDelete(value?.id)}

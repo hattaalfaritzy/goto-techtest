@@ -1,5 +1,5 @@
 'use client';
-import { Button, HeadingLink } from '@/components/commons';
+import { Button, HeadingLink, Icon } from '@/components/commons';
 import { InputText } from '@/components/forms';
 import { ADD_CONTACT } from '@/graphql/mutations/contact-mutations';
 import { GET_CONTACTS } from '@/graphql/queries/contact';
@@ -56,12 +56,21 @@ export default function AddContact() {
                             label='Phone'
                             type='number'
                         />
-                        <button onClick={() => remove(index)}>Remove</button>
+                        <Button
+                            variant='transparent'
+                            className='group p-1.5 border border-error hover:border-error hover:bg-error'
+                            rounded
+                            onClick={() => remove(index)}
+                        >
+                            <Icon name='trash' width={16} className='fill-error group-hover:fill-white' />
+                        </Button>
                     </div>
                 ))}
-                <button type='button' onClick={() => append({ number: '' })}>
-                    Add Phone
-                </button>
+                <Button
+                    label='Add Phone Number'
+                    className='py-2 px-4 bg-primary-700 hover:bg-opacity-70'
+                    onClick={() => append({ number: '' })}
+                />
                 <Button disabled={loading} label='Add Contact' type='submit' className='w-full' />
             </form>
         </div>
