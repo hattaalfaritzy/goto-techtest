@@ -5,8 +5,10 @@ import { Button, Card, HeadingLink, Icon, ListForm, Pagination, Table } from '@/
 import { GET_CONTACTS } from '@/graphql/queries/contact';
 import { useQuery } from '@apollo/client';
 import useStorage from '@/hooks/use-storage';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+    const router = useRouter();
     const { setLocalStorageItem, getLocalStorageItem } = useStorage();
     const [contactsData, setContactsData] = useState<ContactInterface.Contact[]>([]);
     const [favoriteContacts, setFavoriteContacts] = useState<ContactInterface.Contact[]>([]);
@@ -53,7 +55,10 @@ export default function Home() {
         const updatedContacts = [...contactsData, contact];
         setContactsData(updatedContacts);
         setLocalStorageItem('contact', updatedContacts);
-        setLocalStorageItem('favorites', favoriteContacts.filter((item) => item.id !== contact.id));
+        setLocalStorageItem(
+            'favorites',
+            favoriteContacts.filter((item) => item.id !== contact.id)
+        );
     };
 
     const handleSearchChange = (search: string) => {
@@ -63,26 +68,23 @@ export default function Home() {
         } else {
             setGraphqlVariables({
                 where: {
-                    _or: [
-                        { first_name: { _ilike: `%${search}%` } },
-                        { last_name: { _ilike: `%${search}%` } }
-                    ]
-                }
+                    _or: [{ first_name: { _ilike: `%${search}%` } }, { last_name: { _ilike: `%${search}%` } }],
+                },
             });
         }
     };
 
     const startIndex = (currentPage - 1) * limitPage;
-    const endIndex = startIndex + limitPage;    
+    const endIndex = startIndex + limitPage;
     const contactsToDisplay = contactsData?.slice(startIndex, endIndex);
     const columns: string[] = ['No.', 'First Name', 'Last Name', 'Phone', 'Action'];
-    
+
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
-    
+
     return (
-        <main className='flex flex-col items-center w-full py--default space-y-8'>
+        <div className='flex flex-col items-center w-full py--default space-y-8'>
             <div className='flex flex-col w-full'>
                 <HeadingLink title='List Favorite Contacts' />
                 <div className='grid grid-cols-1 gap-4 w-full'>
@@ -119,7 +121,7 @@ export default function Home() {
                 </div>
             </div>
             <div className='flex flex-col w-full'>
-                <HeadingLink title='List Contacts' />
+                <HeadingLink title='List Contacts' withBack />
                 <div className='flex flex-col w-full space-y-6'>
                     <div className='flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 w-full'>
                         <form className='flex flex-row justify-start items-center space-x-6 w-full lg:w-auto'>
@@ -131,7 +133,13 @@ export default function Home() {
                                 onChange={(e) => handleSearchChange(e.target.value)}
                             />
                         </form>
-                        <Button label='Add Contact' className='py-2 px-4' />
+                        <Button
+                            label='Add Contact'
+                            className='py-2 px-4 bg-primary-700 hover:bg-opacity-70'
+                            onClick={() => {
+                                router.push('/add-contact');
+                            }}
+                        />
                     </div>
                     <Table columns={columns} loading={loading}>
                         {contactsToDisplay.length > 0 ? (
@@ -166,14 +174,9 @@ export default function Home() {
                             </tr>
                         )}
                     </Table>
-                    <Pagination
-                        total={contacts?.contact.length}
-                        itemsPerPage={limitPage}
-                        currentPage={currentPage}
-                        onClickPage={handlePageChange}
-                    />
+                    <Pagination total={contacts?.contact.length} itemsPerPage={limitPage} currentPage={currentPage} onClickPage={handlePageChange} />
                 </div>
             </div>
-        </main>
+        </div>
     );
 }

@@ -10,7 +10,7 @@ export default function Table({ classNameWrapper, className, columns, children, 
                 </div>
             ) : (
                 <table className={clsx('table', className)}>
-                    <thead className='sticky z-10 top-0 p-4 bg-[#F9FAFF] border-b border-[#F4F4F4]'>
+                    <thead className='sticky top-0 p-4 bg-[#F9FAFF] border-b border-[#F4F4F4]'>
                         <tr>
                             {columns.map((item: any, index: number | string) => (
                                 <TableHeader key={index} label={item} />

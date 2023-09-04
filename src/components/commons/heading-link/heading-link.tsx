@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Card from '../card/card';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/navigation';
+import { Icon } from '..';
 
 export default function HeadingLink({ className, classNameTitle, classNameLabel, title, label, withBack = false, renderActions, loading }: Props) {
     const router = useRouter();
@@ -14,7 +15,9 @@ export default function HeadingLink({ className, classNameTitle, classNameLabel,
     return (
         <Card className={clsx(containerHeading.styles, className)}>
             <div className={clsx(rowHeading.styles)}>
-                {withBack && <div onClick={() => router.back}>Back</div>}
+                {withBack && <div className='cursor-pointer' onClick={() => router.back()}>
+                    <Icon name='chevron-left' className='fill-black' />
+                </div>}
                 <div className={clsx('flex flex-col justify-start items-start w-full bg-transparent', label && 'space-y-1')}>
                     <span className={clsx(titleStyles.styles, classNameTitle)}>{title}</span>
                     {label && loading ? (

@@ -1,8 +1,20 @@
+import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 import { Message } from '../../commons';
 
-export default function InputText({ className, replaceClassNameLabel, label, register, errMessage, rounded = false, iconLeft, iconRight, variant = 'default', important = false, ...props }: Props) {
-
+const InputText = forwardRef(({
+    className,
+    replaceClassNameLabel,
+    label,
+    register,
+    errMessage,
+    rounded = false,
+    iconLeft,
+    iconRight,
+    variant = 'default',
+    important = false,
+    ...props
+}: Props, ref) => {
     switch (variant) {
         case 'default':
             return (
@@ -41,7 +53,11 @@ export default function InputText({ className, replaceClassNameLabel, label, reg
         default:
             return <div />;
     }
-}
+});
+
+InputText.displayName = 'InputText';
+
+export default InputText;
 
 type Props = JSX.IntrinsicElements['input'] & {
     className?: string;
