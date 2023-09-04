@@ -15,4 +15,8 @@ declare namespace ContactInterface {
     export interface ApiResponse {
         contact: Contact[];
     }
+
+    export interface ApiResponseDetail {
+        contact_by_pk: Contact;
+    }
 }

@@ -2,12 +2,18 @@
 import { Button, HeadingLink } from '@/components/commons';
 import { InputText } from '@/components/forms';
 import { ADD_CONTACT } from '@/graphql/mutations/contact-mutations';
+import { GET_CONTACTS } from '@/graphql/queries/contact';
 import { formAddContact } from '@/utils/form-validation';
 import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 export default function AddContact() {
-    const [addContactMutation, { data, loading, error }] = useMutation(ADD_CONTACT);
+    const router = useRouter();
+    const [addContactMutation, { loading }] = useMutation(ADD_CONTACT, {
+        refetchQueries: [{ query: GET_CONTACTS }]
+    });
+    
     const {
         register,
         handleSubmit,
@@ -28,7 +34,7 @@ export default function AddContact() {
                     phones: formData.phones,
                 },
             });
-            console.log('Contact added successfully.');
+            router.push('/');
         } catch (e) {
             console.error('Error adding contact:', e);
         }
@@ -38,11 +44,12 @@ export default function AddContact() {
         <div className='flex flex-col items-center w-full py--default space-y-8'>
             <HeadingLink title='Add Contact' withBack />
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-6 w-full'>
-                <InputText register={register('first_name')} errMessage={errors.first_name?.message} placeholder='Input your first name' label='First Name' />
-                <InputText register={register('last_name')} errMessage={errors.last_name?.message} placeholder='Input your last name' label='Last Name' />
+                <InputText disabled={loading} register={register('first_name')} errMessage={errors.first_name?.message} placeholder='Input your first name' label='First Name' />
+                <InputText disabled={loading} register={register('last_name')} errMessage={errors.last_name?.message} placeholder='Input your last name' label='Last Name' />
                 {fields.map((field, index) => (
                     <div key={field.id}>
                         <InputText
+                            disabled={loading}
                             register={register(`phones.${index}.number`)}
                             errMessage={errors.phones?.[index]?.number?.message}
                             placeholder='Input your phone'
@@ -55,7 +62,7 @@ export default function AddContact() {
                 <button type='button' onClick={() => append({ number: '' })}>
                     Add Phone
                 </button>
-                <Button label='Add Contact' type='submit' className='w-full' />
+                <Button disabled={loading} label='Add Contact' type='submit' className='w-full' />
             </form>
         </div>
     );

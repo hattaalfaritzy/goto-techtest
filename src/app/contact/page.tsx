@@ -12,14 +12,19 @@ export default function Home() {
     const { setLocalStorageItem, getLocalStorageItem } = useStorage();
     const [contactsData, setContactsData] = useState<ContactInterface.Contact[]>([]);
     const [favoriteContacts, setFavoriteContacts] = useState<ContactInterface.Contact[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const limitPage = 10;
 
     const [graphqlVariables, setGraphqlVariables] = useState({
         where: {},
     });
 
-    const { data: contacts, loading } = useQuery<ContactInterface.ApiResponse>(GET_CONTACTS, {
+    const {
+        data: contacts,
+        loading,
+        refetch,
+    } = useQuery<ContactInterface.ApiResponse>(GET_CONTACTS, {
         variables: graphqlVariables,
     });
 
@@ -42,6 +47,17 @@ export default function Home() {
         }
     }, [contacts?.contact]);
 
+    useEffect(() => {
+        if (shouldRefetch) {
+            refetch().then(({ data: newData }) => {
+                const updatedContacts = newData.contact.filter((contact) => !favoriteContacts.find((fav) => fav.id === contact.id));
+                setContactsData(updatedContacts);
+                setLocalStorageItem('contact', updatedContacts);
+                setShouldRefetch(false);
+            });
+        }
+    }, [shouldRefetch]);
+
     const addToFavorites = (contact: ContactInterface.Contact) => {
         setFavoriteContacts([...favoriteContacts, contact]);
         const updatedContacts = contactsData.filter((item) => item.id !== contact.id);
@@ -62,7 +78,7 @@ export default function Home() {
     };
 
     const handleSearchChange = (search: string) => {
-        setCurrentPage(1); // reset to first page during a new search
+        setCurrentPage(1);
         if (search.trim() === '') {
             setGraphqlVariables({ where: {} });
         } else {
@@ -121,7 +137,7 @@ export default function Home() {
                 </div>
             </div>
             <div className='flex flex-col w-full'>
-                <HeadingLink title='List Contacts' withBack />
+                <HeadingLink title='List Contacts' />
                 <div className='flex flex-col w-full space-y-6'>
                     <div className='flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 w-full'>
                         <form className='flex flex-row justify-start items-center space-x-6 w-full lg:w-auto'>
@@ -144,7 +160,13 @@ export default function Home() {
                     <Table columns={columns} loading={loading}>
                         {contactsToDisplay.length > 0 ? (
                             contactsToDisplay.map((value, index) => (
-                                <tr key={index} className='cursor-pointer'>
+                                <tr
+                                    key={index}
+                                    className='cursor-pointer'
+                                    onClick={() => {
+                                        router.push(`/contact/${value.id}`);
+                                    }}
+                                >
                                     <td>{index + 1}</td>
                                     <td>{value?.first_name ?? '-'}</td>
                                     <td>{value?.last_name ?? '-'}</td>

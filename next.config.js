@@ -4,6 +4,15 @@ const nextConfig = {
     compress: true,
     reactStrictMode: true,
     output: 'standalone',
+    async redirects() {
+        return [
+            {
+            source: '/',
+            destination: '/contact',
+            permanent: true,
+            },
+        ]
+    },
     httpAgentOptions: {
         keepAlive: false,
     },
