@@ -1,0 +1,41 @@
+.table {
+    @apply table-fixed min-w-full;
+
+    th {
+        @apply p-3 text-left;
+    }
+
+    td {
+        @apply text-sm text-[#3C434E] font-normal p-3 border-b;
+    }
+
+    thead > tr {
+        @apply border-b;
+    }
+
+    tbody > tr {
+        &:not(.disabled):hover {
+            @apply bg-primary bg-opacity-10;
+        }
+
+        &.disabled > td {
+            @apply px-3 py-16 text-center text-light;
+        }
+    }
+
+    @each $i in (1, 2, 3, 4, 5, 6, 7, 8) {
+        &.col-#{$i}--fit {
+            th:nth-child(#{$i}),
+            td:nth-child(#{$i}) {
+                width: 1px;
+            }
+        }
+    }
+
+    &.col-last--fit {
+        th:last-child:not(:first-child),
+        td:last-child:not(:first-child) {
+            width: 1px;
+        }
+    }
+}

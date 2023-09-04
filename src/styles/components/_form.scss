@@ -1,0 +1,51 @@
+input:focus {
+    outline: none !important;
+}
+
+// LABEL FORM
+.form-label {
+    @apply block font-semibold text-sm text-black;
+}
+
+// CONTAINER FORM INPUT ANIMATION
+.form-control-title-animation {
+    @apply px-2 py-3 w-full text-black text-xs md:text-base bg-transparent cursor-pointer;
+
+    &:read-only {
+        @apply focus:ring-0 focus:border-primary;
+    }
+}
+
+// CONTAINER FORM INPUT DEFAULT
+.form-control-default {
+    @apply relative flex justify-between items-center w-full text-black text-xs md:text-base bg-white px-4 py-3;
+
+    .input-form-default {
+        @apply w-full cursor-pointer bg-transparent;
+    }
+
+    &:read-only {
+        @apply focus:ring-0 focus:border-black;
+    }
+}
+
+// FORM ERROR
+.form-error {
+    @apply border-error focus:border-error focus:ring-0;
+}
+
+.textarea-control-default {
+    @apply relative flex justify-between items-center w-full text-black text-xs md:text-base bg-white p-4;
+
+    .input-form-default {
+        @apply w-full cursor-pointer bg-transparent outline-none;
+    }
+
+    &:read-only {
+        @apply focus:ring-0 focus:border-black;
+    }
+}
+
+input[type=textarea] {
+    appearance: none;
+}

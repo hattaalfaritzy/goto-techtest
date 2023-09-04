@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function HeadingLink({ className, classNameTitle, classNameLabel, title, label, withBack = false, renderActions, loading }: Props) {
     const router = useRouter();
 
-    const containerHeading = css`flex flex-row justify-between items-center w-full p-2 bg-transparent`;
+    const containerHeading = css`flex flex-row justify-between items-center w-full py-4 px-0`;
     const rowHeading = css`flex flex-row justify-start items-center ${withBack && 'space-x-4'}`;
     const titleStyles = css`text-base lg:text-xl text-black font-semibold`;
     const valueStyles = css`text-black text-sm`;

@@ -1,6 +1,32 @@
 {
     "extends": "next/core-web-vitals",
     "rules": {
-        "react/no-unknown-property": ["error", { "ignore": ["css"] }]
+        "react-refresh/only-export-components": "off",
+        "import/named": "off",
+        "import/no-named-as-default": "off",
+        "import/no-named-as-default-member": "off",
+        "no-console": "off",
+        "linebreak-style": "off",
+        "global-require": "off",
+        "comma-dangle": ["off", "never"],
+        "quotes": ["error", "single", { "avoidEscape": true }],
+        "no-undef": ["off", { "typeof": true }],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "no-useless-catch": "off",
+        "react-hooks/rules-of-hooks": "off",
+        "react/no-unknown-property": ["error", { "ignore": ["css"] }],
+        "import/no-anonymous-default-export": ["error", {
+          "allowObject": true
+        }],
+        "max-len": [
+            "off",
+            {
+                "code": 160,
+                "tabWidth": 4
+            }
+        ]
     }
-}
+  }
+  

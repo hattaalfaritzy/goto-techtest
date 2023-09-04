@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='en' className={clsx('scroll-smooth', POPPINS.variable, ROBOTO_MONO.variable)}>
-            <body className='flex flex-col w-screen h-auto min-h-screen'>
+            <body className='flex flex-col w-screen h-auto min-h-screen overflow-x-hidden'>
                 <ApolloWrapper>
                     <div id='layout-default'>
                         <Header /> 

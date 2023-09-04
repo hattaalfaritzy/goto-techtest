@@ -20,26 +20,6 @@
 //     min-height: 100vh;
 // }
 
-// SCROLLBAR
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #f3f4f6;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
-}
-// SCROLLBAR
-
 .hide-mobile {
     @apply hidden md:flex;
 }

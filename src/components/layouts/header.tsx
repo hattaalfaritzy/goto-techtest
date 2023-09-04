@@ -6,13 +6,16 @@ import { css } from '@emotion/react';
 
 export default function Header() {
 
-    const headerStyles = css`fixed top-0 flex w-full py-[30px] bg-white shadow-md`;
-    const navStyles = css`flex justify-between items-center max-w-screen-xl mx-auto w-full`;
+    const headerStyles = css`fixed z-50 top-0 flex w-full bg-white shadow-md`;
+    const navStyles = css`flex justify-between items-center max-w-screen-xl mx-auto w-full py--default px--default`;
 
     return (
         <header className={clsx(headerStyles.styles)}>
             <nav className={clsx(navStyles.styles)}>
-                <ImageWithFallback alt='Logo GoTo' src='/images/logo.png' className='w-24 h-auto'  />
+                <div className='flex flex-row justify-start items-end space-x-1'>
+                    <ImageWithFallback alt='Logo GoTo' src='/images/logo.png' className='w-24 h-auto'  />
+                    <span className='text-sm leading-none pb-2'>Technical Test</span>
+                </div>
                 <Button onClick={() => console.log('Button clicked!')} className='flex justify-center items-center w-12 h-12' rounded>D</Button>
             </nav>
         </header>
