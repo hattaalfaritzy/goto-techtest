@@ -6,12 +6,13 @@ export default function ListForm({ className, classNameValue, title, value, load
     const containerListForm = css`flex flex-col justify-start items-start ${loading && 'space-y-1'}`;
     const titleStyles = css`text-black text-sm font-semibold ${important && 'required-form'}`;
     const valueStyles = css`text-black text-xs capitalize`;
+    const skeletonStyles = css`rounded-full bg-light-700 h-4 w-2/3 animate-pulse`;
 
     return (
         <div className={clsx(containerListForm.styles, className)}>
             {title && <span className={clsx(titleStyles.styles)}>{title}</span>}
             {loading ? (
-                <span className='rounded-full bg-light-700 h-4 w-2/3 animate-pulse' />
+                <span className={clsx(skeletonStyles.styles)} />
             ) : renderValue || <span className={clsx(valueStyles.styles, classNameValue)}>{value ? value : '-'}</span>}
         </div>
     );

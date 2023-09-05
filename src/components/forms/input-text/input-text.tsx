@@ -1,65 +1,47 @@
-import React, { forwardRef } from 'react';
 import clsx from 'clsx';
+import React, { forwardRef } from 'react';
 import { Message } from '../../commons';
+import { css } from '@emotion/react';
 
-const InputText = forwardRef(({
-    className,
-    replaceClassNameLabel,
-    label,
-    register,
-    errMessage,
-    rounded = false,
-    iconLeft,
-    iconRight,
-    variant = 'default',
-    important = false,
-    ...props
-}: Props, ref) => {
-    switch (variant) {
-        case 'default':
-            return (
-                <div className={clsx('flex flex-col w-full', className)}>
-                    {label && <div className={clsx(replaceClassNameLabel || 'form-label pb-1.5')}>{label} {important && <span className='text-error'>*</span>}</div>}
-                    <div className={clsx('form-control-default border border-[#D9DDE2]', rounded && 'rounded-full', errMessage && 'form-error')}>
-                        {iconLeft && <div>{iconLeft}</div>}
-                        <input className={clsx('input-form-default')} {...register} {...props} />
-                        {iconRight && <div>{iconRight}</div>}
-                    </div>
-                    {errMessage && <Message className='mt-2' label={errMessage} />}
+const InputText = forwardRef(
+    ({
+        className,
+        replaceClassNameLabel,
+        label,
+        register,
+        errMessage,
+        rounded = false,
+        iconLeft,
+        iconRight,
+        variant = 'default',
+        important = false,
+        disabled = false,
+        ...props
+    }: Props, ref) => {
+        const wrapperInput = css`flex flex-col w-full`;
+        const labelStyles = css`form-label pb-1.5 ${important && 'required-form'}`;
+        const containerInput = css`form-control-default border border-[#D9DDE2] ${rounded && 'rounded-full'} ${errMessage && 'form-error'} ${disabled && 'form-disabled'}`;
+        const inputStyles = css`input-form-default ${disabled ? 'cursor-default' : 'cursor-pointer'}`
+
+        return (
+            <div className={clsx(wrapperInput.styles, className)}>
+                {label && <div className={clsx(replaceClassNameLabel || labelStyles.styles)}>{label}</div>}
+                <div className={clsx(containerInput.styles)}>
+                    {iconLeft && <div>{iconLeft}</div>}
+                    <input className={clsx(inputStyles.styles)} {...register} {...props} disabled={disabled} />
+                    {iconRight && <div>{iconRight}</div>}
                 </div>
-            );
-        case 'animation':
-            return (
-                <div className={clsx('flex flex-col w-full', className)}>
-                    {label && <div className={clsx(replaceClassNameLabel || 'form-label')}>{label} {important && <span className='text-error'>*</span>}</div>}
-                    <div className='relative flex justify-between items-center w-full'>
-                        {iconLeft && <div className='px-2.5 z-10'>{iconLeft}</div>}
-                        <input className={clsx('form-control-title-animation')} {...props} />
-                        {iconRight && (
-                            <div className={clsx('px-2.5 z-10 text-lg cursor-pointer', errMessage ? 'text-error' : 'text-primary')}>{iconRight}</div>
-                        )}
-                    </div>
-                    <div className='bg-primary h-0.5 relative'>
-                        <div
-                            className={clsx(
-                                'bg-error absolute flex h-full',
-                                errMessage ? 'left-0 transition-[width] duration-1000 w-full' : 'right-0 transition-[width] duration-1000 w-0'
-                            )}
-                        />
-                    </div>
-                    {errMessage && <Message className='mt-2' label={errMessage} />}
-                </div>
-            );
-        default:
-            return <div />;
+                {errMessage && <Message className='mt-2' label={errMessage} />}
+            </div>
+        );
     }
-});
+);
 
 InputText.displayName = 'InputText';
 
 export default InputText;
 
-type Props = JSX.IntrinsicElements['input'] & {
+type Props = {
     className?: string;
     replaceClassNameLabel?: string;
     label?: string;
@@ -71,4 +53,4 @@ type Props = JSX.IntrinsicElements['input'] & {
     errMessage?: any;
     variant?: 'default' | 'animation';
     important?: boolean;
-};
+} & React.ComponentPropsWithoutRef<'input'>;

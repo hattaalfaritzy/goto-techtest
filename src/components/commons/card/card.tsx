@@ -10,7 +10,7 @@ export default function Card({
 }: Props) {
     if (!children) return null;
 
-    const cardStyles = css`flex bg-white p-3 ${withShadow && `shadow-md`} ${rounded && `rounded-lg`}`;
+    const cardStyles = css`flex p-3 ${withShadow && 'shadow-md'} ${rounded && 'rounded-lg'}`;
 
     return (
         <div

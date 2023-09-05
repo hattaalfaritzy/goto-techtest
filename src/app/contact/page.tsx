@@ -153,7 +153,15 @@ export default function Home() {
                 </div>
             </div>
             <div className='flex flex-col w-full'>
-                <HeadingLink title='List Contacts' />
+                <HeadingLink title='List Contacts' renderActions={
+                    <Button
+                    label='Add Contact'
+                    className='py-2 px-4 bg-primary-700 hover:bg-opacity-70 hide-website'
+                    onClick={() => {
+                        router.push('/add-contact');
+                    }}
+                />
+                } />
                 <div className='flex flex-col w-full space-y-6'>
                     <div className='flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 w-full'>
                         <form className='flex flex-row justify-start items-center space-x-6 w-full lg:w-auto'>
@@ -167,7 +175,7 @@ export default function Home() {
                         </form>
                         <Button
                             label='Add Contact'
-                            className='py-2 px-4 bg-primary-700 hover:bg-opacity-70'
+                            className='py-2 px-4 bg-primary-700 hover:bg-opacity-70 hide-mobile'
                             onClick={() => {
                                 router.push('/add-contact');
                             }}
@@ -205,7 +213,7 @@ export default function Home() {
                                         >
                                             <Icon name='menu' width={16} className='fill-primary-700 group-hover:fill-white' />
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                             variant='transparent'
                                             className='group p-1.5 border border-primary-700 hover:border-primary-700 hover:bg-primary-700'
                                             rounded
@@ -214,7 +222,7 @@ export default function Home() {
                                             }}
                                         >
                                             <Icon name='clip' width={16} className='fill-primary-700 group-hover:fill-white' />
-                                        </Button>
+                                        </Button> */}
                                         <Button
                                             variant='transparent'
                                             className='group p-1.5 border border-error hover:border-error hover:bg-error'

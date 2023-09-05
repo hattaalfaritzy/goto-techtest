@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Icon from '../icon';
+import { css } from '@emotion/react';
 
 export default function Pagination({
     className,
@@ -47,13 +48,16 @@ export default function Pagination({
         onClickPage(page);
     };
 
+    const pagiActiveStyles = css`flex justify-center items-center h-6 w-6 bg-primary-700 hover:bg-primary-700 rounded-full`;
+    const pagiNotActiveStyles = css`flex justify-center items-center h-6 w-6 rounded-full hover:bg-primary-700/10 on-hover`;
+
 
     return (
         <div className={clsx('flex flex-wrap justify-start lg:justify-center space-x-2 w-full lg:w-auto', className)}>
             <button
                 onClick={handlePrevClick}
                 disabled={currentPage === 1}
-                className={clsx('flex justify-center items-center h-6 w-6 rounded-full hover:bg-primary/10 on-hover')}
+                className={clsx(pagiNotActiveStyles.styles)}
             >
                 <Icon name='chevron-left' className='fill-[#A0A8B6]' width={8} />
             </button>
@@ -64,7 +68,7 @@ export default function Pagination({
                         key={page}
                         onClick={() => handlePageClick(page)}
                         disabled={currentPage === page}
-                        className={clsx(page !== currentPage ? 'flex justify-center items-center h-6 w-6 rounded-full hover:bg-primary/10 on-hover' : 'flex justify-center items-center h-6 w-6 bg-primary hover:bg-primary rounded-full')}
+                        className={clsx(page !== currentPage ? pagiNotActiveStyles.styles : pagiActiveStyles.styles)}
                     >
                         <span className={clsx('text-sm ', page == currentPage ? 'text-white' : 'text-[#A0A8B6]')}>{page.toString()}</span>
                     </button>
@@ -75,7 +79,7 @@ export default function Pagination({
             <button
                 onClick={handleNextClick}
                 disabled={currentPage === totalPages}
-                className={clsx('flex justify-center items-center h-6 w-6 rounded-full hover:bg-primary/10 on-hover')}
+                className={clsx(pagiNotActiveStyles.styles)}
             >
                 <Icon name='chevron-right' className='fill-[#A0A8B6]' width={8} />
             </button>

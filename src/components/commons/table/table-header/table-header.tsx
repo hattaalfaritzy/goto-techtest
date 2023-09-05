@@ -1,14 +1,15 @@
 import clsx from 'clsx';
+import { css } from '@emotion/react';
 
-export default function TableHeader({ className, label, headerIcons }: Props) {
+export default function TableHeader({ className, label }: Props) {
+
+    const headerTableStyles = css`text-sm text-primary-900 font-normal`;
+
     return (
         <th className={clsx(className)}>
-            {/* <div className="flex"> */}
-                {headerIcons && headerIcons}
-                <span className="text-sm text-primary-900 font-normal">
-                    {label}
-                </span>
-            {/* </div> */}
+            <span className={clsx(headerTableStyles.styles)}>
+                {label}
+            </span>
         </th>
     );
 }
@@ -16,5 +17,4 @@ export default function TableHeader({ className, label, headerIcons }: Props) {
 interface Props {
     className?: string;
     label?: string;
-    headerIcons?: any;
 }
