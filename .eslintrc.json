@@ -1,5 +1,10 @@
 {
     "extends": "next/core-web-vitals",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
     "rules": {
         "react-refresh/only-export-components": "off",
         "import/named": "off",
@@ -17,9 +22,12 @@
         "no-useless-catch": "off",
         "react-hooks/rules-of-hooks": "off",
         "react/no-unknown-property": ["error", { "ignore": ["css"] }],
-        "import/no-anonymous-default-export": ["error", {
-          "allowObject": true
-        }],
+        "import/no-anonymous-default-export": [
+            "error",
+            {
+                "allowObject": true
+            }
+        ],
         "max-len": [
             "off",
             {
@@ -28,5 +36,4 @@
             }
         ]
     }
-  }
-  
+}

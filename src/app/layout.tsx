@@ -9,6 +9,22 @@ import '@/styles/index.scss';
 export const metadata: Metadata = {
     title: 'Tech Test GoTo',
     description: 'Technical Test GoTo by hattaalfaritzy',
+    authors: [
+        {
+            name: 'Muhammad Hatta Alfaritzy',
+            url: 'https://www.linkedin.com/in/hattaalfaritzy/',
+        }
+    ],
+    icons: {
+        icon: '/images/logo.png',
+        apple: '/images/logo.png',
+    },
+    openGraph: {
+        title: 'Tech Test GoTo',
+        description: 'Technical Test GoTo by hattaalfaritzy',
+        images: '/images/logo.png',
+        url: 'https://github.com/hattaalfaritzy/goto-techtest',
+    }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
