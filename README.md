@@ -43,7 +43,7 @@ This project uses a range of modern libraries and tools:
 
 ```raw
 .
-├── 📂 __test__/                 Public files (e.g. favicon).
+├── 📂 __test__/                 Tests files.
 ├── 📂 public/                   Public files (e.g. favicon).
 ├── 📂 src/
 │   ├── ⚛️ app/                   Next.js page components.
