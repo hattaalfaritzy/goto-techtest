@@ -1,6 +1,9 @@
 # GoTo Technical Test: Software Engineer - Web Platform
  This project was created as part of the technical test for GoTo's Software Engineer - Web Platform role. The application was built using the Next.js framework and other modern tools.
 
+## 🚢 Deploy
+https://goto-techtest.vercel.app/
+
 ## 🚀 Getting Started
 
 1. **Setting up the Environment.**
