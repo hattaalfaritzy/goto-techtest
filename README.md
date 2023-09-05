@@ -21,7 +21,7 @@ pnpm dev
 ```
 Once started, open http://localhost:3000 with your browser to see the application.
 
-## 🛠 Script
+## 📚 Script
 - `yarn dev` - Run development mode
 - `yarn build` - Build the application for production
 - `yarn start` - Start a Next.js production server (require yarn build first)
